@@ -49,7 +49,7 @@ const ResidentReports = () => {
             <div className="glass-card p-4 md:p-6">
                 <button
                     onClick={() => navigate(`/resident/${residentId}`)}
-                    className="btn btn-ghost mb-4 px-4 py-2.5 text-base"
+                    className="btn btn-ghost mb-4 px-4 py-2.5 text-base text-white"
                 >
                     <ArrowLeft size={22} />
                     <span className="hidden sm:inline">Volver al Dashboard</span>

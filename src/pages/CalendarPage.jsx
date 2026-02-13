@@ -45,7 +45,7 @@ const CalendarPage = () => {
             <div className="glass-card p-6">
                 <button
                     onClick={() => navigate('/')}
-                    className="flex items-center text-text-muted hover:text-primary mb-4 transition-colors"
+                    className="btn btn-ghost mb-4 text-white"
                 >
                     <ArrowLeft size={20} className="mr-1" />
                     Volver al Dashboard

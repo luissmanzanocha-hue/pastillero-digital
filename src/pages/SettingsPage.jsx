@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings, Save, Database, Moon, Sun, Building2, ArrowLeft, Download, Upload, CloudUpload, Loader2 } from 'lucide-react';
+import { Settings, Save, Database, Moon, Sun, Building2, ArrowLeft, Download, Upload, UploadCloud, RefreshCcw } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const SettingsPage = () => {
@@ -9,27 +9,47 @@ const SettingsPage = () => {
     const [theme, setTheme] = useState('dark');
     const [isMigrating, setIsMigrating] = useState(false);
 
-    // ... handleSave, handleExport ...
+    const handleSave = () => {
+        alert('Configuración guardada correctamente.');
+    };
+
+    const handleExport = () => {
+        try {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ residents }));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `pastillero_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        } catch (error) {
+            console.error('Error al exportar:', error);
+            alert('Error al exportar los datos.');
+        }
+    };
 
     const handleMigration = async () => {
         if (window.confirm('¿Estás seguro de que deseas migrar tus datos locales a la nube? Esto copiará todos tus residentes y medicamentos a tu cuenta de Supabase.')) {
             setIsMigrating(true);
-            const success = await migrateLocalData();
-            setIsMigrating(false);
-            if (success) {
-                // Optional: redirect or reload
+            try {
+                const success = await migrateLocalData();
+                if (success) {
+                    alert('Migración completada con éxito.');
+                }
+            } catch (error) {
+                console.error('Error en la migración:', error);
+            } finally {
+                setIsMigrating(false);
             }
         }
     };
 
     return (
         <div className="space-y-6 animate-in slide-in-from-bottom duration-500">
-            {/* Header */}
-            {/* ... */}
             <div className="glass-card p-6">
                 <button
                     onClick={() => navigate('/')}
-                    className="flex items-center text-text-muted hover:text-primary mb-4 transition-colors"
+                    className="btn btn-ghost mb-4 text-white"
                 >
                     <ArrowLeft size={20} className="mr-1" />
                     Volver al Dashboard
@@ -40,29 +60,26 @@ const SettingsPage = () => {
                             <Settings className="text-white" size={32} />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-bold">Configuración</h1>
+                            <h1 className="text-3xl font-bold text-white">Configuración</h1>
                             <p className="text-text-muted mt-1">Personaliza tu experiencia y gestiona tus datos</p>
                         </div>
                     </div>
 
-                    {/* Legal Notice Integration */}
-                    <div className="max-w-[150px] text-center md:text-right border-t md:border-t-0 md:border-l border-white/5 pt-2 md:pt-0 md:pl-4 transform scale-[0.1] origin-center md:origin-right opacity-10 hover:opacity-100 transition-opacity">
+                    <div className="max-w-[150px] text-center md:text-right border-t md:border-t-0 md:border-l border-white/5 pt-2 md:pt-0 md:pl-4 opacity-70">
                         <p className="text-[10px] text-white font-bold whitespace-nowrap">
                             © 2026 José Luis Manzano
                         </p>
                         <p className="text-[8px] text-text-muted leading-tight italic">
-                            Todos los derechos reservados. Este software está protegido por las leyes de propiedad intelectual.
+                            Todos los derechos reservados.
                         </p>
                     </div>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* General Settings */}
                 <div className="lg:col-span-2 space-y-6">
-                    {/* ... */}
                     <div className="glass-card p-8">
-                        <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                        <h3 className="text-xl font-bold mb-6 flex items-center gap-3 text-white">
                             <Building2 size={24} className="text-primary" />
                             General
                         </h3>
@@ -80,7 +97,7 @@ const SettingsPage = () => {
                                     </button>
                                     <button
                                         onClick={() => setTheme('light')}
-                                        className={`flex items-center justify-center gap-3 p-4 rounded-xl border-2 transition-all ${theme === 'light' ? 'border-primary bg-primary/20 text-white' : 'border-glass-border text-text-muted cursor-not-allowed opacity-50'}`}
+                                        className={`flex items-center justify-center gap-3 p-4 rounded-xl border-2 transition-all opacity-50 cursor-not-allowed border-glass-border text-text-muted`}
                                         disabled
                                     >
                                         <Sun size={20} />
@@ -103,23 +120,21 @@ const SettingsPage = () => {
                     </div>
                 </div>
 
-                {/* Data Management */}
                 <div className="space-y-6">
                     <div className="glass-card p-8 border-l-4 border-secondary">
-                        <h1 className="text-xl font-bold mb-6 flex items-center gap-3">
+                        <h1 className="text-xl font-bold mb-6 flex items-center gap-3 text-white">
                             <Database size={24} className="text-secondary" />
                             Gestión de Datos
                         </h1>
 
                         <div className="space-y-4">
-                            {/* Migration Button */}
                             <button
                                 onClick={handleMigration}
                                 disabled={isMigrating}
                                 className={`w-full flex items-center justify-between p-4 rounded-xl transition-all border ${isMigrating ? 'bg-primary/10 border-primary text-primary cursor-not-allowed' : 'bg-primary/20 border-primary/30 hover:bg-primary/30 text-white shadow-lg shadow-primary/10'}`}
                             >
                                 <div className="flex items-center gap-3">
-                                    {isMigrating ? <Loader2 size={22} className="animate-spin" /> : <CloudUpload size={22} className="text-primary" />}
+                                    {isMigrating ? <RefreshCcw size={22} className="animate-spin" /> : <UploadCloud size={22} className="text-primary" />}
                                     <div className="text-left">
                                         <span className="block font-bold">Sincronizar Nube</span>
                                         <span className="block text-[10px] opacity-70">Migrar datos de este equipo</span>
@@ -148,7 +163,7 @@ const SettingsPage = () => {
                             </button>
 
                             <p className="text-xs text-text-muted border-t border-white/5 pt-4">
-                                <b>Nota Cloud:</b> Tus datos ahora se guardan automáticamente en la nube. Usa la opción "Sincronizar" solo para subir datos que tenías antes de esta actualización.
+                                <b>Nota Cloud:</b> Tus datos ahora se guardan automáticamente en la nube.
                             </p>
                         </div>
                     </div>
@@ -157,6 +172,5 @@ const SettingsPage = () => {
         </div>
     );
 };
-
 
 export default SettingsPage;

@@ -298,24 +298,24 @@ const ResidentKardex = () => {
                                                         <div className="flex justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity p-0.5">
                                                             <button
                                                                 onClick={() => handleAddStock(medication)}
-                                                                className="w-7 h-7 rounded-full bg-white border-2 border-slate-900 shadow-[1px_1px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex items-center justify-center"
+                                                                className="w-7 h-7 rounded-full bg-slate-800 border-2 border-slate-700 shadow-lg hover:border-primary/50 hover:bg-slate-700 transition-all flex items-center justify-center"
                                                                 title="Agregar Stock"
                                                             >
-                                                                <Plus size={14} className="text-slate-900 stroke-[3]" />
+                                                                <Plus size={14} className="text-emerald-400 stroke-[3]" />
                                                             </button>
                                                             <button
                                                                 onClick={() => handleEdit(medication)}
-                                                                className="w-7 h-7 rounded-full bg-white border-2 border-slate-900 shadow-[1px_1px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex items-center justify-center"
+                                                                className="w-7 h-7 rounded-full bg-slate-800 border-2 border-slate-700 shadow-lg hover:border-primary/50 hover:bg-slate-700 transition-all flex items-center justify-center"
                                                                 title="Editar"
                                                             >
-                                                                <Edit size={12} className="text-indigo-600 stroke-[2.5]" />
+                                                                <Edit size={12} className="text-indigo-400 stroke-[2.5]" />
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDelete(medication.id)}
-                                                                className="w-7 h-7 rounded-full bg-white border-2 border-slate-900 shadow-[1px_1px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex items-center justify-center"
+                                                                className="w-7 h-7 rounded-full bg-slate-800 border-2 border-slate-700 shadow-lg hover:border-primary/50 hover:bg-slate-700 transition-all flex items-center justify-center"
                                                                 title="Eliminar"
                                                             >
-                                                                <Trash2 size={12} className="text-slate-900 stroke-[2.5]" />
+                                                                <Trash2 size={12} className="text-red-400 stroke-[2.5]" />
                                                             </button>
                                                         </div>
                                                     </td>

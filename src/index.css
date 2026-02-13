@@ -152,6 +152,16 @@ p {
 }
 
 /* ===== BUTTONS ===== */
+button {
+    all: unset;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+}
+
 .btn {
     display: inline-flex;
     align-items: center;

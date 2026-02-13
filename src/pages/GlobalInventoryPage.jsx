@@ -103,8 +103,7 @@ const GlobalInventoryPage = () => {
                 <div>
                     <button
                         onClick={() => navigate('/')}
-                        className="flex items-center text-text-muted hover:text-primary mb-2 transition-colors"
-                        style={{ backgroundColor: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer' }}
+                        className="btn btn-ghost mb-2 text-white"
                     >
                         <ArrowLeft size={20} className="mr-1" />
                         Volver al Dashboard
