@@ -4,7 +4,9 @@ import { Home, Users, X, BarChart3, Settings, Calendar, Package } from 'lucide-r
 import { useApp } from '../../context/AppContext';
 
 const Sidebar = () => {
-    const { isSidebarOpen, closeSidebar } = useApp();
+    const { isSidebarOpen } = useApp(); // Kept for context subscription if needed, though strictly we only need this if we want to collapse it on desktop too. 
+    // Actually, for this "Desktop Permanent" version, we might not even need isSidebarOpen unless we implement desktop collapsing later.
+    // For now, let's keep it simple: It's ALWAYS visible on desktop.
     const location = useLocation();
 
     const navigation = [
@@ -22,100 +24,57 @@ const Sidebar = () => {
     };
 
     return (
-        <>
-            {/* Sidebar */}
-            <aside
-                className={`
-                    hidden lg:flex fixed top-0 left-0 w-80 border-r border-glass-border
-                    bg-[#0F172A] z-[50] h-screen
-                    transition-transform duration-300 flex-col
-                `}
-            // Desktop-only sidebar
-            >
-                {/* Logo Section */}
-                <div className="p-8 border-b border-glass-border relative">
-                    {/* Backup Close Button (Top Right) */}
-                    <button
-                        onClick={closeSidebar}
-                        className="lg:hidden absolute top-2 right-2 p-3 text-text-muted hover:text-white bg-white/5 rounded-lg border border-white/5"
-                        style={{ zIndex: 10001 }}
-                        aria-label="Cerrar menú (arriba)"
-                    >
-                        <X size={24} />
-                    </button>
-
-                    <div className="flex flex-col items-center">
-                        <div className="w-full h-24 flex items-center justify-center p-2 rounded-xl bg-white/5 border border-glass-border overflow-hidden shadow-lg shadow-white/5">
-                            <img
-                                src="/logo_le_monde_final.png"
-                                alt="Le Monde Logo"
-                                className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
-                            />
-                        </div>
+        <aside className="hidden lg:flex fixed top-0 left-0 w-80 h-screen bg-[#0F172A] border-r border-glass-border flex-col z-50">
+            {/* Logo Section */}
+            <div className="p-8 border-b border-glass-border">
+                <div className="flex flex-col items-center">
+                    <div className="w-full h-24 flex items-center justify-center p-2 rounded-xl bg-white/5 border border-glass-border overflow-hidden shadow-lg shadow-white/5">
+                        <img
+                            src="/logo_le_monde_final.png"
+                            alt="Le Monde Logo"
+                            className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                        />
                     </div>
                 </div>
+            </div>
 
-                {/* Navigation Section */}
-                <nav className="flex-1 p-6 overflow-y-auto min-h-0">
-                    <div className="space-y-2">
-                        {navigation.map((item) => {
-                            const Icon = item.icon;
-                            const active = isActive(item.href);
+            {/* Navigation Section */}
+            <nav className="flex-1 p-6 overflow-y-auto">
+                <div className="space-y-2">
+                    {navigation.map((item) => {
+                        const Icon = item.icon;
+                        const active = isActive(item.href);
 
-                            return (
-                                <Link
-                                    key={item.name}
-                                    to={item.href}
-                                    onClick={closeSidebar}
-                                    className={`
-                                        flex items-center gap-4 px-5 py-4 rounded-xl
-                                        transition-all duration-300 group
-                                        ${active
-                                            ? 'bg-primary/20 text-white shadow-lg shadow-primary/10'
-                                            : 'text-text-muted hover:bg-glass hover:text-white'
-                                        }
-                                    `}
-                                >
-                                    <Icon
-                                        size={24}
-                                        className={`transition-colors duration-300 ${active ? 'text-primary' : 'text-text-muted group-hover:text-primary'}`}
-                                    />
-                                    <span className="font-semibold text-base tracking-wide">{item.name}</span>
-                                </Link>
-                            );
-                        })}
-                    </div>
-
-                </nav>
-
-                <div className="flex-shrink-0 border-t border-glass-border bg-[#0F172A] p-4 pb-12">
-                    {/* Mobile Close Button (Bottom) */}
-                    <div className="lg:hidden w-full mb-2 relative z-[10000]">
-                        <button
-                            type="button"
-                            onClick={closeSidebar}
-                            className="w-full flex items-center justify-center gap-2 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 hover:bg-red-500/20 active:bg-red-500/30 transition-all active:scale-95 cursor-pointer"
-                            style={{ WebkitTapHighlightColor: 'transparent' }}
-                        >
-                            <X size={20} />
-                            <span className="font-bold uppercase tracking-widest text-sm">Cerrar Menú</span>
-                        </button>
-                    </div>
-
-                    <div className="p-3 text-center border border-white/5 rounded-xl bg-white/[0.02]">
-                        <p className="text-[10px] text-text-muted font-medium uppercase tracking-widest">Premium Edition v2.5</p>
-                    </div>
+                        return (
+                            <Link
+                                key={item.name}
+                                to={item.href}
+                                className={`
+                                    flex items-center gap-4 px-5 py-4 rounded-xl
+                                    transition-all duration-300 group
+                                    ${active
+                                        ? 'bg-primary/20 text-white shadow-lg shadow-primary/10'
+                                        : 'text-text-muted hover:bg-glass hover:text-white'
+                                    }
+                                `}
+                            >
+                                <Icon
+                                    size={24}
+                                    className={`transition-colors duration-300 ${active ? 'text-primary' : 'text-text-muted group-hover:text-primary'}`}
+                                />
+                                <span className="font-semibold text-base tracking-wide">{item.name}</span>
+                            </Link>
+                        );
+                    })}
                 </div>
-            </aside>
+            </nav>
 
-            {/* Mobile Overlay */}
-            {isSidebarOpen && (
-                <div
-                    className="lg:hidden fixed inset-0 bg-black/30 z-30"
-                    onClick={closeSidebar}
-                />
-            )}
-        </>
+            <div className="flex-shrink-0 border-t border-glass-border bg-[#0F172A] p-4 pb-8">
+                <div className="p-3 text-center border border-white/5 rounded-xl bg-white/[0.02]">
+                    <p className="text-[10px] text-text-muted font-medium uppercase tracking-widest">Premium Edition v2.5</p>
+                </div>
+            </div>
+        </aside>
     );
 };
 
