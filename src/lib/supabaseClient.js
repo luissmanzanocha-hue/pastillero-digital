@@ -3,8 +3,16 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
+let supabaseInstance = null;
+
 if (!supabaseUrl || !supabaseAnonKey) {
     console.error('Faltan las variables de entorno de Supabase. Por favor, revisa el archivo .env')
+} else {
+    try {
+        supabaseInstance = createClient(supabaseUrl, supabaseAnonKey)
+    } catch (error) {
+        console.error('Error al inicializar Supabase:', error);
+    }
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = supabaseInstance;

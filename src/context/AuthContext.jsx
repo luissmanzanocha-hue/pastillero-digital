@@ -8,11 +8,22 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!supabase) {
+            setLoading(false);
+            return;
+        }
+
         // Check active sessions and sets the user
         const getSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            setUser(session?.user ?? null);
-            setLoading(false);
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                if (error) throw error;
+                setUser(session?.user ?? null);
+            } catch (error) {
+                console.error("Error getting session:", error);
+            } finally {
+                setLoading(false);
+            }
         };
 
         getSession();
@@ -26,9 +37,18 @@ export const AuthProvider = ({ children }) => {
         return () => subscription.unsubscribe();
     }, []);
 
-    const signUp = (email, password) => supabase.auth.signUp({ email, password });
-    const signIn = (email, password) => supabase.auth.signInWithPassword({ email, password });
-    const signOut = () => supabase.auth.signOut();
+    const signUp = (email, password) => {
+        if (!supabase) return Promise.reject(new Error("Conexión a base de datos no disponible"));
+        return supabase.auth.signUp({ email, password });
+    };
+    const signIn = (email, password) => {
+        if (!supabase) return Promise.reject(new Error("Conexión a base de datos no disponible"));
+        return supabase.auth.signInWithPassword({ email, password });
+    };
+    const signOut = () => {
+        if (!supabase) return Promise.resolve();
+        return supabase.auth.signOut();
+    };
 
     return (
         <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut }}>
