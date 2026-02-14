@@ -44,10 +44,11 @@ const Sidebar = () => {
             {/* Sidebar */}
             <aside
                 className={`
-                    fixed top-0 left-0 h-screen w-80 bg-[#0F172A] border-r border-glass-border
-                    transition-transform duration-300 z-40 flex flex-col
+                    fixed top-0 left-0 h-screen w-80 border-r border-glass-border
+                    transition-transform duration-300 z-50 flex flex-col
                     ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
                 `}
+                style={{ backgroundColor: '#0F172A' }}
             >
                 {/* Logo Section */}
                 <div className="p-8 border-b border-glass-border">
