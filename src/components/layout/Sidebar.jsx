@@ -86,11 +86,11 @@ const Sidebar = () => {
 
                 </nav>
 
-                <div className="flex-shrink-0 border-t border-glass-border bg-[#0F172A] p-4">
+                <div className="flex-shrink-0 border-t border-glass-border bg-[#0F172A] p-4 pb-12">
                     {/* Mobile Close Button (Bottom) */}
                     <button
                         onClick={() => setIsOpen(false)}
-                        className="lg:hidden w-full flex items-center justify-center gap-2 p-4 mb-2 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all active:scale-95"
+                        className="lg:hidden w-full flex items-center justify-center gap-2 p-4 mb-2 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 hover:bg-red-500/20 transition-all active:scale-95"
                         style={{ zIndex: 10000 }}
                     >
                         <X size={20} />
