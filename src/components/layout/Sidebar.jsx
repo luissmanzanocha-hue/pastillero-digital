@@ -28,13 +28,11 @@ const Sidebar = () => {
                 className={`
                     fixed top-0 left-0 w-80 border-r border-glass-border
                     transition-transform duration-300 flex flex-col
-                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                    bg-[#0F172A] z-[9999] h-[100dvh]
+                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+                    lg:translate-x-0 lg:static lg:h-screen lg:z-auto
                 `}
-                style={{
-                    backgroundColor: '#0F172A',
-                    zIndex: 9999,
-                    height: '100dvh'
-                }}
+            // No inline styles needed as we moved them to classes for better responsiveness
             >
                 {/* Logo Section */}
                 <div className="p-8 border-b border-glass-border relative">
