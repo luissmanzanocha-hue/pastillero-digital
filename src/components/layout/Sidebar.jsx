@@ -24,11 +24,14 @@ const Sidebar = () => {
     return (
         <>
             {/* Mobile Menu Button - Only visible when menu is closed */}
+            {/* Mobile Menu Button - Only visible when menu is closed */}
             <button
                 onClick={toggleSidebar}
-                className={`lg:hidden fixed top-4 right-4 z-50 p-3 bg-glass border border-glass-border rounded-lg shadow-lg backdrop-blur-md transition-opacity duration-300 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-                aria-label="Toggle menu"
-            >                <Menu size={24} className="text-white" />
+                className={`lg:hidden fixed top-6 right-6 p-4 bg-slate-900/90 border border-white/10 rounded-xl shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                style={{ zIndex: 10000 }}
+                aria-label="Abrir menú"
+            >
+                <Menu size={28} className="text-white drop-shadow-md" />
             </button>
 
             {/* Sidebar */}
