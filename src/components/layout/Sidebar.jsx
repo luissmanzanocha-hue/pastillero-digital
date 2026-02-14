@@ -33,8 +33,7 @@ const Sidebar = () => {
                 style={{
                     backgroundColor: '#0F172A',
                     zIndex: 9999,
-                    height: '100dvh',
-                    transform: isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
+                    height: '100dvh'
                 }}
             >
                 {/* Logo Section */}
