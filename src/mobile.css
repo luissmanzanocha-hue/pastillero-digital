@@ -1,0 +1,21 @@
+/* ===== LOGIN PAGE SPECIFIC STYLES ===== */
+.login-bg-blob {
+    filter: blur(80px);
+    /* Mobile default */
+}
+
+@media (min-width: 768px) {
+    .login-logo-img {
+        height: 8rem !important;
+        /* h-32 */
+    }
+
+    .login-title-text {
+        font-size: 2.25rem !important;
+        /* text-4xl */
+    }
+
+    .login-bg-blob {
+        filter: blur(120px) !important;
+    }
+}
