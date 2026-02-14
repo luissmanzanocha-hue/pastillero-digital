@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings, Save, Database, Moon, Sun, Building2, ArrowLeft, Download, Upload, UploadCloud, RefreshCcw } from 'lucide-react';
+import { Settings, Save, Database, Moon, Sun, Building2, ArrowLeft, Download, Upload, UploadCloud, RefreshCcw, LogOut, User } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 
 const SettingsPage = () => {
     const navigate = useNavigate();
     const { residents, migrateLocalData } = useApp();
+    const { user, signOut } = useAuth();
     const [theme, setTheme] = useState('dark');
     const [isMigrating, setIsMigrating] = useState(false);
 
     const handleSave = () => {
         alert('Configuración guardada correctamente.');
+    };
+
+    const handleSignOut = async () => {
+        if (window.confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+            try {
+                await signOut();
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        }
     };
 
     const handleExport = () => {
@@ -85,6 +97,28 @@ const SettingsPage = () => {
                         </h3>
 
                         <div className="space-y-6">
+                            {/* Account Section */}
+                            <div className="mb-8 border-b border-white/5 pb-8">
+                                <label className="block text-sm font-bold text-white uppercase tracking-wider mb-4">Cuenta de Usuario</label>
+                                <div className="bg-white/5 rounded-xl p-4 flex items-center justify-between border border-glass-border">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-primary/20 rounded-full">
+                                            <User size={20} className="text-primary" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-white">{user?.email}</p>
+                                            <p className="text-xs text-text-muted">Administrador</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={handleSignOut}
+                                        className="btn btn-ghost text-red-400 hover:bg-red-500/10 hover:text-red-400"
+                                        title="Cerrar Sesión"
+                                    >
+                                        <LogOut size={20} />
+                                    </button>
+                                </div>
+                            </div>
                             <div>
                                 <label className="block text-sm font-bold text-white uppercase tracking-wider mb-2">Tema del Sistema</label>
                                 <div className="grid grid-cols-2 gap-4">

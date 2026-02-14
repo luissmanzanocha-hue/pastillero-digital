@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Menu, X, Pill, BarChart3, Settings, Calendar, Package, LogOut } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import { Home, Users, Menu, X, Pill, BarChart3, Settings, Calendar, Package } from 'lucide-react';
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { user, signOut } = useAuth();
     const location = useLocation();
 
     const navigation = [
@@ -20,14 +18,6 @@ const Sidebar = () => {
     const isActive = (href) => {
         if (href === '/') return location.pathname === '/';
         return location.pathname.startsWith(href);
-    };
-
-    const handleSignOut = async () => {
-        try {
-            await signOut();
-        } catch (error) {
-            console.error('Error signing out:', error);
-        }
     };
 
     return (
@@ -104,27 +94,9 @@ const Sidebar = () => {
 
                 </nav>
 
-                {/* Footer - Logout and User Info */}
-                <div className="flex-shrink-0 border-t border-glass-border bg-[#0F172A]">
-                    {user && (
-                        <div className="px-6 py-4 border-b border-white/5 bg-white/[0.02]">
-                            <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold mb-1">Usuario</p>
-                            <p className="text-sm text-white font-medium truncate">{user.email}</p>
-                        </div>
-                    )}
-
-                    <div className="p-4">
-                        <button
-                            onClick={handleSignOut}
-                            className="w-full flex items-center gap-3 px-5 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all duration-300 group"
-                        >
-                            <LogOut size={20} className="group-hover:translate-x-1 transition-transform" />
-                            <span className="font-semibold">Cerrar Sesión</span>
-                        </button>
-                    </div>
-
-                    <div className="p-3 text-center border-t border-white/5 opacity-30">
-                        <p className="text-[9px] text-text-muted font-medium uppercase tracking-widest">Premium Edition</p>
+                <div className="flex-shrink-0 border-t border-glass-border bg-[#0F172A] p-4">
+                    <div className="p-3 text-center border border-white/5 rounded-xl bg-white/[0.02]">
+                        <p className="text-[10px] text-text-muted font-medium uppercase tracking-widest">Premium Edition v2.5</p>
                     </div>
                 </div>
             </aside>
