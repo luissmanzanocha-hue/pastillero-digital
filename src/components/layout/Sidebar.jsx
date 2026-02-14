@@ -51,7 +51,14 @@ const Sidebar = () => {
                 style={{ backgroundColor: '#0F172A' }}
             >
                 {/* Logo Section */}
-                <div className="p-8 border-b border-glass-border">
+                <div className="p-8 border-b border-glass-border relative">
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="lg:hidden absolute top-4 right-4 p-2 text-text-muted hover:text-white transition-colors"
+                        aria-label="Cerrar menú"
+                    >
+                        <X size={24} />
+                    </button>
                     <div className="flex flex-col items-center">
                         <div className="w-full h-24 flex items-center justify-center p-2 rounded-xl bg-white/5 border border-glass-border overflow-hidden shadow-lg shadow-white/5">
                             <img
