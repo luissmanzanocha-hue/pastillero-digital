@@ -88,14 +88,25 @@ const Sidebar = () => {
 
                 <div className="flex-shrink-0 border-t border-glass-border bg-[#0F172A] p-4 pb-12">
                     {/* Mobile Close Button (Bottom) */}
-                    <button
-                        onClick={() => setIsOpen(false)}
-                        className="lg:hidden w-full flex items-center justify-center gap-2 p-4 mb-2 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 hover:bg-red-500/20 transition-all active:scale-95"
-                        style={{ zIndex: 10000 }}
-                    >
-                        <X size={20} />
-                        <span className="font-bold uppercase tracking-widest text-sm">Cerrar Menú</span>
-                    </button>
+                    <div className="lg:hidden w-full mb-2 relative z-[10000]">
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setIsOpen(false);
+                            }}
+                            onTouchEnd={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                setIsOpen(false);
+                            }}
+                            className="w-full flex items-center justify-center gap-2 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 hover:bg-red-500/20 active:bg-red-500/30 transition-all active:scale-95 cursor-pointer"
+                            style={{ WebkitTapHighlightColor: 'transparent' }}
+                        >
+                            <X size={20} />
+                            <span className="font-bold uppercase tracking-widest text-sm">Cerrar Menú</span>
+                        </button>
+                    </div>
 
                     <div className="p-3 text-center border border-white/5 rounded-xl bg-white/[0.02]">
                         <p className="text-[10px] text-text-muted font-medium uppercase tracking-widest">Premium Edition v2.5</p>
@@ -115,4 +126,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
