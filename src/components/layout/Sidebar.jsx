@@ -42,14 +42,6 @@ const Sidebar = () => {
             >
                 {/* Logo Section */}
                 <div className="p-8 border-b border-glass-border relative">
-                    <button
-                        onClick={() => setIsOpen(false)}
-                        className="lg:hidden absolute top-2 right-2 p-4 text-text-muted hover:text-white transition-colors"
-                        style={{ zIndex: 10000 }}
-                        aria-label="Cerrar menú"
-                    >
-                        <X size={32} />
-                    </button>
                     <div className="flex flex-col items-center">
                         <div className="w-full h-24 flex items-center justify-center p-2 rounded-xl bg-white/5 border border-glass-border overflow-hidden shadow-lg shadow-white/5">
                             <img
@@ -95,6 +87,16 @@ const Sidebar = () => {
                 </nav>
 
                 <div className="flex-shrink-0 border-t border-glass-border bg-[#0F172A] p-4">
+                    {/* Mobile Close Button (Bottom) */}
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="lg:hidden w-full flex items-center justify-center gap-2 p-4 mb-2 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all active:scale-95"
+                        style={{ zIndex: 10000 }}
+                    >
+                        <X size={20} />
+                        <span className="font-bold uppercase tracking-widest text-sm">Cerrar Menú</span>
+                    </button>
+
                     <div className="p-3 text-center border border-white/5 rounded-xl bg-white/[0.02]">
                         <p className="text-[10px] text-text-muted font-medium uppercase tracking-widest">Premium Edition v2.5</p>
                     </div>
