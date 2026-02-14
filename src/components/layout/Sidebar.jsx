@@ -24,16 +24,24 @@ const Sidebar = () => {
     return (
         <>
             {/* Mobile Menu Button - Only visible when menu is closed */}
-            {/* Mobile Menu Button - Floating Toggle */}
+            {/* Mobile Header Bar - Visual Anchor */}
+            <div className="lg:hidden fixed top-0 left-0 w-full h-16 bg-[#0F172A] border-b border-white/10 z-40 flex items-center justify-center">
+                <span className="text-sm font-bold tracking-widest text-text-muted uppercase">Pastillero Digital</span>
+            </div>
+
+            {/* Mobile Menu Button - Master Toggle */}
             <button
                 onClick={toggleSidebar}
-                className="lg:hidden fixed top-4 left-4 p-3 bg-[#0F172A] border border-white/10 rounded-xl shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 z-[10000]"
+                className={`lg:hidden fixed top-3 left-4 p-2.5 rounded-lg border shadow-xl backdrop-blur-md transition-all duration-300 z-[10002] ${isSidebarOpen
+                        ? 'bg-red-500/10 border-red-500/30 text-red-500' // High contrast when open (Close state)
+                        : 'bg-slate-800 border-white/10 text-white hover:bg-slate-700' // Explicit contrast when closed (Open state)
+                    }`}
                 aria-label={isSidebarOpen ? "Cerrar menú" : "Abrir menú"}
             >
                 {isSidebarOpen ? (
-                    <X size={24} className="text-white drop-shadow-md" />
+                    <X size={26} strokeWidth={2.5} />
                 ) : (
-                    <Menu size={24} className="text-white drop-shadow-md" />
+                    <Menu size={26} strokeWidth={2.5} />
                 )}
             </button>
 
