@@ -7,9 +7,15 @@ const MobileNavbar = () => {
     const { isSidebarOpen, toggleSidebar } = useApp();
 
     return (
-        <div className="lg:hidden fixed top-0 left-0 w-full z-[10000] pointer-events-none">
+        <div
+            className="lg:hidden fixed top-0 left-0 w-full z-[10000] pointer-events-none"
+            style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 10000, pointerEvents: 'none' }}
+        >
             {/* Header Bar Background - Only blocks events where visible */}
-            <div className="absolute top-0 left-0 w-full h-16 bg-[#0F172A] border-b border-white/10 shadow-lg pointer-events-auto flex items-center justify-center">
+            <div
+                className="absolute top-0 left-0 w-full h-16 bg-[#0F172A] border-b border-white/10 shadow-lg pointer-events-auto flex items-center justify-center"
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '64px', backgroundColor: '#0F172A', pointerEvents: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
                 <span className="text-sm font-bold tracking-widest text-text-muted uppercase">Pastillero Digital</span>
             </div>
 

@@ -15,7 +15,11 @@ export const useApp = () => {
 export const AppProvider = ({ children }) => {
     const [residents, setResidents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { user } = useAuth();
+
+    const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
+    const closeSidebar = () => setIsSidebarOpen(false);
 
     // Load data from Supabase when user is authenticated
     useEffect(() => {
@@ -405,7 +409,10 @@ export const AppProvider = ({ children }) => {
         administerMedication,
         getTransactions,
         refreshData: fetchData,
-        migrateLocalData
+        migrateLocalData,
+        isSidebarOpen,
+        toggleSidebar,
+        closeSidebar
     };
 
     return (
