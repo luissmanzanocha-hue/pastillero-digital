@@ -45,7 +45,7 @@ const Sidebar = () => {
             <aside
                 className={`
                     fixed top-0 left-0 h-screen w-80 border-r border-glass-border
-                    transition-transform duration-300 z-50 flex flex-col
+                    transition-transform duration-300 z-[100] flex flex-col
                     ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
                 `}
                 style={{ backgroundColor: '#0F172A' }}
@@ -54,10 +54,10 @@ const Sidebar = () => {
                 <div className="p-8 border-b border-glass-border relative">
                     <button
                         onClick={() => setIsOpen(false)}
-                        className="lg:hidden absolute top-4 right-4 p-2 text-text-muted hover:text-white transition-colors"
+                        className="lg:hidden absolute top-2 right-2 p-4 text-text-muted hover:text-white transition-colors z-[110]"
                         aria-label="Cerrar menú"
                     >
-                        <X size={24} />
+                        <X size={32} />
                     </button>
                     <div className="flex flex-col items-center">
                         <div className="w-full h-24 flex items-center justify-center p-2 rounded-xl bg-white/5 border border-glass-border overflow-hidden shadow-lg shadow-white/5">
