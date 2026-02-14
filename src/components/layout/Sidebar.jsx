@@ -26,13 +26,11 @@ const Sidebar = () => {
             {/* Sidebar */}
             <aside
                 className={`
-                    fixed top-0 left-0 w-80 border-r border-glass-border
-                    transition-transform duration-300 flex flex-col
-                    bg-[#0F172A] z-[9999] h-[100dvh] pt-16 lg:pt-0
-                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-                    lg:translate-x-0 lg:h-screen lg:z-auto
+                    hidden lg:flex fixed top-0 left-0 w-80 border-r border-glass-border
+                    bg-[#0F172A] z-[50] h-screen
+                    transition-transform duration-300 flex-col
                 `}
-            // No inline styles needed as we moved them to classes for better responsiveness
+            // Desktop-only sidebar
             >
                 {/* Logo Section */}
                 <div className="p-8 border-b border-glass-border relative">
