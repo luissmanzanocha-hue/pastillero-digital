@@ -43,23 +43,24 @@ const LoginPage = () => {
     return (
         <div className="min-h-screen bg-[#0F172A] flex items-center justify-center p-4 relative overflow-hidden">
             {/* Background elements */}
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px]" />
+            {/* Background elements */}
+            <div className="absolute top-[-10%] left-[-10%] w-[60%] md:w-[40%] h-[40%] bg-primary/10 rounded-full blur-[80px] md:blur-[120px]" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[60%] md:w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[80px] md:blur-[120px]" />
 
             <div className="w-full max-w-md relative z-10">
                 {/* Logo Section */}
-                <div className="text-center mb-8 animate-fade-in">
-                    <div className="flex justify-center mb-6 animate-fade-in-up">
+                <div className="text-center mb-6 md:mb-8 animate-fade-in">
+                    <div className="flex justify-center mb-4 md:mb-6 animate-fade-in-up">
                         <img
                             src="/logo_le_monde_final.png"
                             alt="Le Monde Logo"
-                            className="h-32 w-auto object-contain filter drop-shadow-lg transform hover:scale-105 transition-all duration-300"
+                            className="h-24 md:h-32 w-auto object-contain filter drop-shadow-lg transform hover:scale-105 transition-all duration-300"
                         />
                     </div>
-                    <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent px-4">
                         Pastillero Digital
                     </h1>
-                    <p className="text-text-muted mt-2 uppercase tracking-widest text-sm font-semibold">Premium Edition v2.5</p>
+                    <p className="text-text-muted mt-2 uppercase tracking-widest text-xs md:text-sm font-semibold">Premium Edition v2.5</p>
                 </div>
 
                 {/* Card */}
