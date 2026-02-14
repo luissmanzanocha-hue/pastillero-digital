@@ -45,16 +45,17 @@ const Sidebar = () => {
             <aside
                 className={`
                     fixed top-0 left-0 h-screen w-80 border-r border-glass-border
-                    transition-transform duration-300 z-[100] flex flex-col
+                    transition-transform duration-300 flex flex-col
                     ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
                 `}
-                style={{ backgroundColor: '#0F172A' }}
+                style={{ backgroundColor: '#0F172A', zIndex: 9999 }}
             >
                 {/* Logo Section */}
                 <div className="p-8 border-b border-glass-border relative">
                     <button
                         onClick={() => setIsOpen(false)}
-                        className="lg:hidden absolute top-2 right-2 p-4 text-text-muted hover:text-white transition-colors z-[110]"
+                        className="lg:hidden absolute top-2 right-2 p-4 text-text-muted hover:text-white transition-colors"
+                        style={{ zIndex: 10000 }}
                         aria-label="Cerrar menú"
                     >
                         <X size={32} />
