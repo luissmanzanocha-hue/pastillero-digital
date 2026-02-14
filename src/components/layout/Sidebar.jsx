@@ -38,10 +38,25 @@ const Sidebar = () => {
                     transition-transform duration-300 flex flex-col
                     ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
                 `}
-                style={{ backgroundColor: '#0F172A', zIndex: 9999, height: '100dvh' }}
+                style={{
+                    backgroundColor: '#0F172A',
+                    zIndex: 9999,
+                    height: '100dvh',
+                    transform: isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
+                }}
             >
                 {/* Logo Section */}
                 <div className="p-8 border-b border-glass-border relative">
+                    {/* Backup Close Button (Top Right) */}
+                    <button
+                        onClick={closeSidebar}
+                        className="lg:hidden absolute top-2 right-2 p-3 text-text-muted hover:text-white bg-white/5 rounded-lg border border-white/5"
+                        style={{ zIndex: 10001 }}
+                        aria-label="Cerrar menú (arriba)"
+                    >
+                        <X size={24} />
+                    </button>
+
                     <div className="flex flex-col items-center">
                         <div className="w-full h-24 flex items-center justify-center p-2 rounded-xl bg-white/5 border border-glass-border overflow-hidden shadow-lg shadow-white/5">
                             <img
