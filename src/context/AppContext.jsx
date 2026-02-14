@@ -276,12 +276,16 @@ export const AppProvider = ({ children }) => {
         }
     };
 
-    const administerMedication = async (residentId, medicationId, amount, medicationName, units = 'unidades') => {
+    const administerMedication = async (residentId, medicationId, amount, medicationName, units = 'unidades', nurseName = null) => {
         try {
             const medication = getMedication(residentId, medicationId);
             if (!medication) return;
 
             const newStock = Math.max(0, (parseFloat(medication.current_stock) || 0) - amount);
+
+            const noteText = nurseName
+                ? `Administración por Enf. ${nurseName}: ${medicationName} (${amount} ${units})`
+                : `Administración: ${medicationName} (${amount} ${units})`;
 
             // 1. Register the administration transaction
             const { error: adminError } = await supabase
@@ -289,10 +293,11 @@ export const AppProvider = ({ children }) => {
                 .insert([{
                     medication_id: medicationId,
                     resident_id: residentId,
-                    user_id: user.id,
+                    user_id: user?.id || null,
                     type: 'administer',
                     amount: amount,
-                    note: `Administración: ${medicationName} (${amount} ${units})`
+                    note: noteText,
+                    nurse_name: nurseName || null
                 }]);
 
             if (adminError) throw adminError;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { ArrowLeft, History, Pill } from 'lucide-react';
+import { ArrowLeft, History, Pill, Stethoscope } from 'lucide-react';
 
 const ResidentHistory = () => {
     const { residentId } = useParams();
@@ -16,13 +16,6 @@ const ResidentHistory = () => {
         const loadHistory = async () => {
             if (resident) {
                 setLoading(true);
-                // Fetch all transactions for this resident
-                // In a real app we might want to filter by resident_id in the API, 
-                // but since we have medications, we can aggregate them.
-                // However, my getTransactions is for a specific medication.
-                // I'll update it in AppContext or use a separate fetch here.
-
-                // For simplicity, let's assume we want all 'administer' type transactions for this resident
                 const { data, error } = await import('../lib/supabaseClient').then(m =>
                     m.supabase.from('transactions')
                         .select('*')
@@ -92,6 +85,12 @@ const ResidentHistory = () => {
                                     <p className="text-xs text-text-muted">
                                         Dosis: <span className="text-primary font-bold">{admin.amount} {admin.units || 'unidades'}</span>
                                     </p>
+                                    {admin.nurse_name && (
+                                        <p className="text-xs text-emerald-400 flex items-center gap-1 mt-1">
+                                            <Stethoscope size={12} />
+                                            <span className="font-medium">Enf. {admin.nurse_name}</span>
+                                        </p>
+                                    )}
                                     {admin.note && <p className="text-[10px] text-text-muted italic mt-1">{admin.note}</p>}
                                 </div>
                             </div>
@@ -120,4 +119,3 @@ const ResidentHistory = () => {
 };
 
 export default ResidentHistory;
-

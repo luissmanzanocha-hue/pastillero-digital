@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
-    const { user, loading } = useAuth();
+    const { user, nurseSession, loading } = useAuth();
     const location = useLocation();
 
     if (loading) {
@@ -14,7 +14,8 @@ const ProtectedRoute = ({ children }) => {
         );
     }
 
-    if (!user) {
+    // Allow access if either admin (Supabase user) or nurse session exists
+    if (!user && !nurseSession) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
