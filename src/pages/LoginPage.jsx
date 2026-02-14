@@ -49,8 +49,12 @@ const LoginPage = () => {
             <div className="w-full max-w-md relative z-10">
                 {/* Logo Section */}
                 <div className="text-center mb-8 animate-fade-in">
-                    <div className="inline-flex p-4 gradient-primary rounded-2xl shadow-2xl shadow-primary/20 mb-4 transform hover:scale-105 transition-transform duration-300">
-                        <Pill size={48} className="text-white" />
+                    <div className="flex justify-center mb-6 animate-fade-in-up">
+                        <img
+                            src="/logo_le_monde_final.png"
+                            alt="Le Monde Logo"
+                            className="h-32 w-auto object-contain filter drop-shadow-lg transform hover:scale-105 transition-all duration-300"
+                        />
                     </div>
                     <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
                         Pastillero Digital
