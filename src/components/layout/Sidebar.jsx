@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Users, Menu, X, Pill, BarChart3, Settings, Calendar, Package } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 
 const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const { isSidebarOpen, toggleSidebar, closeSidebar } = useApp();
     const location = useLocation();
 
     const navigation = [
@@ -24,11 +25,10 @@ const Sidebar = () => {
         <>
             {/* Mobile Menu Button - Only visible when menu is closed */}
             <button
-                onClick={() => setIsOpen(true)}
-                className={`lg:hidden fixed top-4 right-4 z-50 p-3 bg-glass border border-glass-border rounded-lg shadow-lg backdrop-blur-md transition-opacity duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                onClick={toggleSidebar}
+                className={`lg:hidden fixed top-4 right-4 z-50 p-3 bg-glass border border-glass-border rounded-lg shadow-lg backdrop-blur-md transition-opacity duration-300 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                 aria-label="Toggle menu"
-            >
-                <Menu size={24} className="text-white" />
+            >                <Menu size={24} className="text-white" />
             </button>
 
             {/* Sidebar */}
@@ -36,7 +36,7 @@ const Sidebar = () => {
                 className={`
                     fixed top-0 left-0 w-80 border-r border-glass-border
                     transition-transform duration-300 flex flex-col
-                    ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
                 `}
                 style={{ backgroundColor: '#0F172A', zIndex: 9999, height: '100dvh' }}
             >
@@ -64,7 +64,7 @@ const Sidebar = () => {
                                 <Link
                                     key={item.name}
                                     to={item.href}
-                                    onClick={() => setIsOpen(false)}
+                                    onClick={closeSidebar}
                                     className={`
                                         flex items-center gap-4 px-5 py-4 rounded-xl
                                         transition-all duration-300 group
@@ -91,15 +91,7 @@ const Sidebar = () => {
                     <div className="lg:hidden w-full mb-2 relative z-[10000]">
                         <button
                             type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setIsOpen(false);
-                            }}
-                            onTouchEnd={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                setIsOpen(false);
-                            }}
+                            onClick={closeSidebar}
                             className="w-full flex items-center justify-center gap-2 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 hover:bg-red-500/20 active:bg-red-500/30 transition-all active:scale-95 cursor-pointer"
                             style={{ WebkitTapHighlightColor: 'transparent' }}
                         >
@@ -115,10 +107,10 @@ const Sidebar = () => {
             </aside>
 
             {/* Mobile Overlay */}
-            {isOpen && (
+            {isSidebarOpen && (
                 <div
                     className="lg:hidden fixed inset-0 bg-black/30 z-30"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeSidebar}
                 />
             )}
         </>
