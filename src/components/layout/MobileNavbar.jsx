@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Menu, X, Home, Users, Package, Calendar, BarChart3, Settings } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 const MobileNavbar = () => {
@@ -16,8 +17,8 @@ const MobileNavbar = () => {
             <button
                 onClick={toggleSidebar}
                 className={`pointer-events-auto absolute top-3 left-4 p-2.5 rounded-xl border shadow-xl transition-all duration-300 ${isSidebarOpen
-                        ? 'bg-red-500/10 border-red-500/30 text-red-500'
-                        : 'bg-slate-800 border-white/10 text-white hover:bg-slate-700'
+                    ? 'bg-red-500/10 border-red-500/30 text-red-500'
+                    : 'bg-slate-800 border-white/10 text-white hover:bg-slate-700'
                     }`}
                 aria-label={isSidebarOpen ? "Cerrar menú" : "Abrir menú"}
             >
