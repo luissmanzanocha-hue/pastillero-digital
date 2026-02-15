@@ -16,16 +16,27 @@ const ResidentHistory = () => {
         const loadHistory = async () => {
             if (resident) {
                 setLoading(true);
-                const { data, error } = await import('../lib/supabaseClient').then(m =>
-                    m.supabase.from('transactions')
+                try {
+                    const { supabase } = await import('../lib/supabaseClient');
+                    const { data, error } = await supabase
+                        .from('transactions')
                         .select('*')
                         .eq('resident_id', residentId)
-                        .eq('type', 'administer')
-                        .order('created_at', { ascending: false })
-                );
+                        .eq('type', 'administer');
 
-                if (!error) {
-                    setTransactions(data || []);
+                    if (error) {
+                        console.error('Error loading history:', error);
+                    } else {
+                        // Sort client-side by most recent first
+                        const sorted = (data || []).sort((a, b) => {
+                            const dateA = new Date(a.created_at || a.date || 0);
+                            const dateB = new Date(b.created_at || b.date || 0);
+                            return dateB - dateA;
+                        });
+                        setTransactions(sorted);
+                    }
+                } catch (err) {
+                    console.error('Error in loadHistory:', err);
                 }
                 setLoading(false);
             }
@@ -96,10 +107,10 @@ const ResidentHistory = () => {
                             </div>
                             <div className="text-right">
                                 <p className="text-sm font-medium text-white">
-                                    {new Date(admin.created_at).toLocaleDateString()}
+                                    {new Date(admin.created_at || admin.date).toLocaleDateString()}
                                 </p>
                                 <p className="text-xs text-text-muted">
-                                    {new Date(admin.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    {new Date(admin.created_at || admin.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </p>
                             </div>
                         </div>
