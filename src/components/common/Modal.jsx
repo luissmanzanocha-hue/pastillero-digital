@@ -35,10 +35,10 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
             {/* Centering Wrapper */}
             <div className="flex min-h-full items-center justify-center p-4">
                 {/* Modal Content */}
-                <div className={`relative w-full ${sizeClasses[size]} bg-[#0F172A] border border-glass-border rounded-2xl p-6 shadow-2xl animate-in slide-in-from-bottom duration-500 my-8`}>
+                <div className={`relative w-full ${sizeClasses[size]} bg-[#0F172A] border border-glass-border rounded-2xl p-4 md:p-5 shadow-2xl animate-in slide-in-from-bottom duration-500 my-4`}>
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-6 pb-4 border-b border-glass-border sticky top-0 bg-[#0F172A] z-10">
-                        <h2 className="text-3xl font-bold text-white">{title}</h2>
+                    <div className="flex items-center justify-between mb-4 pb-3 border-b border-glass-border sticky top-0 bg-[#0F172A] z-10">
+                        <h2 className="text-xl font-bold text-white">{title}</h2>
                         <button
                             onClick={onClose}
                             className="p-2 rounded-lg hover:bg-white/10 transition-all text-text-muted hover:text-white"

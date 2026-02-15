@@ -30,7 +30,7 @@ const ResidentForm = ({ onSubmit, onCancel, initialData = null }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-3">
             {errors.length > 0 && (
                 <Alert
                     type="danger"
@@ -40,7 +40,7 @@ const ResidentForm = ({ onSubmit, onCancel, initialData = null }) => {
             )}
 
             <div>
-                <label htmlFor="name" className="text-white font-semibold">Nombre Completo *</label>
+                <label htmlFor="name" className="text-sm text-white font-semibold">Nombre Completo *</label>
                 <input
                     type="text"
                     id="name"
@@ -48,13 +48,13 @@ const ResidentForm = ({ onSubmit, onCancel, initialData = null }) => {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Ej: Juan Pérez García"
-                    className="w-full px-4 py-3 bg-white/5 border-2 border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white"
+                    className="w-full px-3 py-2 bg-white/5 border border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white text-sm"
                     required
                 />
             </div>
 
             <div>
-                <label htmlFor="age" className="text-white font-semibold">Edad</label>
+                <label htmlFor="age" className="text-sm text-white font-semibold">Edad</label>
                 <input
                     type="number"
                     id="age"
@@ -62,30 +62,30 @@ const ResidentForm = ({ onSubmit, onCancel, initialData = null }) => {
                     value={formData.age}
                     onChange={handleChange}
                     placeholder="Ej: 75"
-                    className="w-full px-4 py-3 bg-white/5 border-2 border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white"
+                    className="w-full px-3 py-2 bg-white/5 border border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white text-sm"
                     min="0"
                     max="150"
                 />
             </div>
 
             <div>
-                <label htmlFor="notes" className="text-white font-semibold">Notas Médicas</label>
+                <label htmlFor="notes" className="text-sm text-white font-semibold">Notas Médicas</label>
                 <textarea
                     id="notes"
                     name="notes"
                     value={formData.notes}
                     onChange={handleChange}
-                    placeholder="Información adicional sobre el residente..."
-                    className="w-full px-4 py-3 bg-white/5 border-2 border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white"
-                    rows="4"
+                    placeholder="Información adicional..."
+                    className="w-full px-3 py-2 bg-white/5 border border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white text-sm"
+                    rows="2"
                 />
             </div>
 
-            <div className="flex gap-3 justify-end pt-4 border-t border-glass-border">
-                <button type="button" onClick={onCancel} className="btn btn-ghost px-6 py-3 text-base">
+            <div className="flex gap-3 justify-end pt-3 border-t border-glass-border">
+                <button type="button" onClick={onCancel} className="btn btn-ghost px-4 py-2 text-sm">
                     Cancelar
                 </button>
-                <button type="submit" className="btn btn-primary px-6 py-3 text-base">
+                <button type="submit" className="btn btn-primary px-4 py-2 text-sm">
                     {initialData ? 'Actualizar' : 'Crear'} Residente
                 </button>
             </div>
