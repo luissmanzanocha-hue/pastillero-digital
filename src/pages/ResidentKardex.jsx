@@ -8,7 +8,7 @@ import { decimalToFraction } from '../utils/calculations';
 const ResidentKardex = () => {
     const { residentId } = useParams();
     const navigate = useNavigate();
-    const { residents, addMedication, updateMedication, deleteMedication } = useApp();
+    const { residents, addMedication, updateMedication, deleteMedication, updateInventory } = useApp();
 
     // State to control view mode (list vs form)
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -57,16 +57,17 @@ const ResidentKardex = () => {
     };
 
     const calculateStockStatus = (medication) => {
-        if (!medication.currentStock && medication.currentStock !== 0) return { color: 'bg-gray-100 text-gray-400', message: 'Sin stock registrado' };
+        const currentStock = parseFloat(medication.current_stock) || 0;
+        if (!currentStock && currentStock !== 0) return { color: 'bg-gray-100 text-gray-400', message: 'Sin stock registrado' };
 
         // Calculate daily usage
-        const dailyDoses = medication.dosagePattern.split('-').reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
+        const dailyDoses = medication.dosagePattern ? medication.dosagePattern.split('-').reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0) : 0;
         const pillFraction = medication.doseType === 'fraction' ? parseFloat(medication.pillFraction) : 1;
         const dailyUsage = dailyDoses * pillFraction;
 
         if (dailyUsage === 0) return { color: 'bg-gray-100 text-gray-400', message: 'Dosis diaria 0' };
 
-        const daysRemaining = Math.floor(medication.currentStock / dailyUsage);
+        const daysRemaining = Math.floor(currentStock / dailyUsage);
 
         let color = 'bg-emerald-500/10 text-emerald-400'; // Green (> 10 days)
         if (daysRemaining <= 5) color = 'bg-red-500/10 text-red-400'; // Red (<= 5 days)
@@ -74,15 +75,14 @@ const ResidentKardex = () => {
 
         return {
             color,
-            message: `Stock: ${medication.currentStock} (${daysRemaining} días restantes)`
+            message: `Stock: ${currentStock} (${daysRemaining} días restantes)`
         };
     };
 
     const handleAddStock = (medication) => {
         const addedAmount = prompt(`Agregar stock para ${medication.name}.\nIngrese cantidad de pastillas a agregar:`);
-        if (addedAmount && !isNaN(addedAmount)) {
-            const newStock = (parseInt(medication.currentStock) || 0) + parseInt(addedAmount);
-            updateMedication(residentId, medication.id, { ...medication, currentStock: newStock });
+        if (addedAmount && !isNaN(addedAmount) && parseInt(addedAmount) > 0) {
+            updateInventory(residentId, medication.id, parseInt(addedAmount), 'Entrada de stock desde Kardex');
         }
     };
 

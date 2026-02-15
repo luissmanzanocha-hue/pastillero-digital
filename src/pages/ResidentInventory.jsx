@@ -27,7 +27,7 @@ const ResidentInventory = () => {
     }
 
     const medications = resident.medications || [];
-    const activeMedications = medications.filter(m => m.status === 'active');
+    const activeMedications = medications.filter(m => !m.status || m.status === 'active');
 
     const handleAdjustStock = (medicationId, isAdding) => {
         const amount = parseFloat(adjustAmount);
@@ -68,7 +68,7 @@ const ResidentInventory = () => {
             {/* List Grid */}
             <div className="grid grid-cols-1 gap-4">
                 {activeMedications.map(med => {
-                    const currentStock = med.inventory?.currentStock || 0;
+                    const currentStock = parseFloat(med.current_stock) || 0;
                     const isOutOfStock = currentStock === 0;
 
                     // Simple logic for list preview colors
@@ -113,7 +113,7 @@ const ResidentInventory = () => {
         const dailyDoses = calculateDailyDoses(medication.dosagePattern);
         const pillFraction = parseFloat(medication.pillFraction) || 1;
         const dailyUsage = calculateDailyUsage(dailyDoses, pillFraction);
-        const currentStock = medication.inventory?.currentStock || 0;
+        const currentStock = parseFloat(medication.current_stock) || 0;
         const remainingDays = calculateRemainingDays(currentStock, dailyUsage);
         const isLowStock = remainingDays < 7 && remainingDays > 0;
         const isOutOfStock = currentStock === 0;

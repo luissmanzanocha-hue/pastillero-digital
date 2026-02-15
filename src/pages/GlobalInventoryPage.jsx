@@ -38,11 +38,11 @@ const GlobalInventoryPage = () => {
         residents.forEach(resident => {
             if (resident?.medications) {
                 resident.medications.forEach(med => {
-                    if (med.status === 'active') {
+                    if (!med.status || med.status === 'active') {
                         const dailyDoses = calculateDailyDoses(med.dosagePattern);
                         const pillFraction = parseFloat(med.pillFraction) || 1;
                         const dailyUsage = calculateDailyUsage(dailyDoses, pillFraction);
-                        const stock = med.inventory?.currentStock || 0;
+                        const stock = parseFloat(med.current_stock) || 0;
                         const remainingDays = calculateRemainingDays(stock, dailyUsage);
 
                         meds.push({
