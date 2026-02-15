@@ -27,7 +27,7 @@ const AdministerPage = () => {
         );
     }
 
-    const activeMedications = resident.medications?.filter(m => m.status === 'active') || [];
+    const activeMedications = resident.medications?.filter(m => !m.status || m.status === 'active') || [];
 
     const handleSelectMed = (med) => {
         setSelectedMed(med);

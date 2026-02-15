@@ -127,9 +127,17 @@ export const AppProvider = ({ children }) => {
                 .insert([{
                     resident_id: residentId,
                     name: medicationData.name,
-                    dose: medicationData.dose,
-                    dose_type: medicationData.dose_type || 'unidades',
-                    frequency: medicationData.frequency,
+                    presentation: medicationData.presentation || null,
+                    via: medicationData.via || 'VO',
+                    "doseType": medicationData.doseType || 'fraction',
+                    "pillFraction": medicationData.pillFraction || '1',
+                    "doseAmount": medicationData.doseAmount || null,
+                    "dosagePattern": medicationData.dosagePattern || '1-0-0-0',
+                    schedules: medicationData.schedules || [],
+                    "treatmentDays": medicationData.treatmentDays || '30',
+                    "startDate": medicationData.startDate || new Date().toISOString().split('T')[0],
+                    doctor: medicationData.doctor || null,
+                    status: medicationData.status || 'active',
                     current_stock: parseFloat(medicationData.initialStock) || 0,
                     user_id: user.id
                 }])
@@ -169,12 +177,25 @@ export const AppProvider = ({ children }) => {
 
     const updateMedication = async (residentId, medicationId, medicationData) => {
         try {
+            const updatePayload = {
+                name: medicationData.name,
+                presentation: medicationData.presentation || null,
+                via: medicationData.via || 'VO',
+                "doseType": medicationData.doseType || 'fraction',
+                "pillFraction": medicationData.pillFraction || '1',
+                "doseAmount": medicationData.doseAmount || null,
+                "dosagePattern": medicationData.dosagePattern || '1-0-0-0',
+                schedules: medicationData.schedules || [],
+                "treatmentDays": medicationData.treatmentDays || '30',
+                "startDate": medicationData.startDate || null,
+                doctor: medicationData.doctor || null,
+                status: medicationData.status || 'active',
+                updated_at: new Date().toISOString()
+            };
+
             const { error } = await supabase
                 .from('medications')
-                .update({
-                    ...medicationData,
-                    updated_at: new Date().toISOString()
-                })
+                .update(updatePayload)
                 .eq('id', medicationId);
 
             if (error) throw error;
@@ -185,7 +206,7 @@ export const AppProvider = ({ children }) => {
                         ...r,
                         medications: r.medications.map(m =>
                             m.id === medicationId
-                                ? { ...m, ...medicationData, updated_at: new Date().toISOString() }
+                                ? { ...m, ...updatePayload }
                                 : m
                         )
                     };
