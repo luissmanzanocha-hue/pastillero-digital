@@ -21,7 +21,7 @@ const ResidentHistory = () => {
                         .select('*')
                         .eq('resident_id', residentId)
                         .eq('type', 'administer')
-                        .order('date', { ascending: false })
+                        .order('created_at', { ascending: false })
                 );
 
                 if (!error) {
@@ -96,10 +96,10 @@ const ResidentHistory = () => {
                             </div>
                             <div className="text-right">
                                 <p className="text-sm font-medium text-white">
-                                    {new Date(admin.date).toLocaleDateString()}
+                                    {new Date(admin.created_at).toLocaleDateString()}
                                 </p>
                                 <p className="text-xs text-text-muted">
-                                    {new Date(admin.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    {new Date(admin.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </p>
                             </div>
                         </div>
