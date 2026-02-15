@@ -67,7 +67,7 @@ const ResidentsPage = () => {
                 isOpen={isModalOpen}
                 onClose={handleCancel}
                 title={editingResident ? 'Editar Residente' : 'Nuevo Residente'}
-                size="md"
+                size="sm"
             >
                 <ResidentForm
                     onSubmit={handleSubmit}

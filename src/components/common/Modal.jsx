@@ -35,9 +35,9 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
             {/* Centering Wrapper */}
             <div className="flex min-h-full items-center justify-center p-4">
                 {/* Modal Content */}
-                <div className={`relative w-full ${sizeClasses[size]} bg-[#0F172A] border border-glass-border rounded-2xl p-4 md:p-5 shadow-2xl animate-in slide-in-from-bottom duration-500 my-4`}>
+                <div className={`relative w-full ${sizeClasses[size]} max-h-[90vh] bg-[#0F172A] border border-glass-border rounded-2xl shadow-2xl animate-in slide-in-from-bottom duration-500 flex flex-col`}>
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-4 pb-3 border-b border-glass-border sticky top-0 bg-[#0F172A] z-10">
+                    <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-glass-border shrink-0">
                         <h2 className="text-xl font-bold text-white">{title}</h2>
                         <button
                             onClick={onClose}
@@ -48,8 +48,8 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
                         </button>
                     </div>
 
-                    {/* Body - Removed max-height constraint for better scrolling */}
-                    <div className="pr-2">
+                    {/* Body - scrollable */}
+                    <div className="overflow-y-auto p-4 md:p-5">
                         {children}
                     </div>
                 </div>
