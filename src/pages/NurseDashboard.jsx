@@ -324,6 +324,31 @@ const NurseDashboard = () => {
                                     <p className="text-xs text-warning text-center font-medium">
                                         * Este cambio solo aplica para esta suministración.
                                     </p>
+
+                                    {/* Action buttons inside edit mode */}
+                                    <div className="flex gap-2 pt-2">
+                                        <button
+                                            onClick={() => { setIsEditMode(false); setDoseNote(''); }}
+                                            className="btn btn-ghost flex-1 py-3 text-sm"
+                                        >
+                                            Cancelar
+                                        </button>
+                                        <button
+                                            onClick={handleAdminister}
+                                            disabled={administerLoading}
+                                            className="flex-1 py-3 rounded-xl text-sm font-bold shadow-lg flex items-center justify-center gap-2 text-white transition-all"
+                                            style={{ background: 'linear-gradient(135deg, #059669, #10B981)' }}
+                                        >
+                                            {administerLoading ? (
+                                                <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                            ) : (
+                                                <>
+                                                    <CheckCircle size={18} />
+                                                    SUMINISTRAR
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="text-4xl font-bold text-center py-6 bg-white/5 rounded-xl border border-glass-border text-white">
