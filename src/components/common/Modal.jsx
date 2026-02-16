@@ -49,7 +49,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
                     </div>
 
                     {/* Body - scrollable */}
-                    <div className="overflow-y-auto p-4 md:p-5">
+                    <div className="flex-1 overflow-y-auto min-h-0 p-4 md:p-5">
                         {children}
                     </div>
                 </div>
