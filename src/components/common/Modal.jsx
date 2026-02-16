@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
             {/* Centering Wrapper */}
             <div className="flex min-h-full items-center justify-center p-4">
                 {/* Modal Content */}
-                <div className={`relative w-full ${sizeClasses[size]} max-h-[90vh] bg-[#0F172A] border border-glass-border rounded-2xl shadow-2xl animate-in slide-in-from-bottom duration-500 flex flex-col`}>
+                <div className={`relative w-full ${sizeClasses[size]} max-h-[80vh] bg-[#0F172A] border border-glass-border rounded-2xl shadow-2xl animate-in slide-in-from-bottom duration-500 flex flex-col`}>
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-glass-border shrink-0">
                         <h2 className="text-xl font-bold text-white">{title}</h2>
@@ -49,7 +49,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
                     </div>
 
                     {/* Body - scrollable */}
-                    <div className="flex-1 overflow-y-auto min-h-0 p-4 md:p-5">
+                    <div className="flex-1 overflow-y-auto min-h-0 p-4 md:p-5 pb-8 md:pb-8">
                         {children}
                     </div>
                 </div>
