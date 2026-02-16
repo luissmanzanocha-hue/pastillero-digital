@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
@@ -8,6 +9,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'unset';
+            // Restore cleanup in case component unmounts with modal open
         }
 
         return () => {
@@ -24,18 +26,22 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
         xl: 'max-w-6xl'
     };
 
-    return (
-        <div className="fixed inset-0 z-50 overflow-y-auto animate-in fade-in duration-300">
+    return createPortal(
+        <div className="fixed inset-0 z-[10000] overflow-y-auto animate-in fade-in duration-300">
             {/* Backdrop */}
             <div
                 className="fixed inset-0 bg-black/80 backdrop-blur-md"
                 onClick={onClose}
+                aria-hidden="true"
             />
 
             {/* Centering Wrapper */}
             <div className="flex min-h-full items-center justify-center p-4">
                 {/* Modal Content */}
-                <div className={`relative w-full ${sizeClasses[size]} max-h-[80vh] bg-[#0F172A] border border-glass-border rounded-2xl shadow-2xl animate-in slide-in-from-bottom duration-500 flex flex-col`}>
+                <div
+                    className={`relative w-full ${sizeClasses[size]} max-h-[80dvh] bg-[#0F172A] border border-glass-border rounded-2xl shadow-2xl animate-in slide-in-from-bottom duration-500 flex flex-col`}
+                    onClick={(e) => e.stopPropagation()}
+                >
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-glass-border shrink-0">
                         <h2 className="text-xl font-bold text-white">{title}</h2>
@@ -49,12 +55,13 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
                     </div>
 
                     {/* Body - scrollable */}
-                    <div className="flex-1 overflow-y-auto min-h-0 p-4 md:p-5 pb-8 md:pb-8">
+                    <div className="flex-1 overflow-y-auto min-h-0 p-4 md:p-5 pb-8 md:pb-8 overscroll-contain">
                         {children}
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
