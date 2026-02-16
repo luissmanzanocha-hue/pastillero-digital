@@ -24,7 +24,7 @@ const ResidentReports = () => {
         );
     }
 
-    const activeMedications = resident.medications?.filter(m => m.status === 'active') || [];
+    const activeMedications = resident.medications?.filter(m => !m.status || m.status === 'active') || [];
 
     // Calculate stats
     const totalMeds = activeMedications.length;
@@ -32,11 +32,11 @@ const ResidentReports = () => {
         const dailyDoses = m.dosagePattern.split('-').reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
         const pillFraction = parseFloat(m.pillFraction) || 1;
         const dailyUsage = dailyDoses * pillFraction;
-        const currentStock = m.inventory?.currentStock || 0;
+        const currentStock = parseFloat(m.current_stock) || 0;
         return (currentStock / dailyUsage) < 7;
     });
 
-    const totalStock = activeMedications.reduce((acc, m) => acc + (m.inventory?.currentStock || 0), 0);
+    const totalStock = activeMedications.reduce((acc, m) => acc + (parseFloat(m.current_stock) || 0), 0);
 
     const handleDownload = async () => {
         await generateWordReport(resident, activeMedications, reportNotes);
@@ -44,33 +44,32 @@ const ResidentReports = () => {
     };
 
     return (
-        <div className="space-y-6 animate-in slide-in-from-bottom duration-500">
+        <div className="space-y-4 animate-in slide-in-from-bottom duration-500">
             {/* Header */}
-            <div className="glass-card p-4 md:p-6">
+            <div className="glass-card p-3 md:p-4">
                 <button
                     onClick={() => navigate(`/resident/${residentId}`)}
-                    className="btn btn-ghost mb-4 px-4 py-2.5 text-base text-white"
+                    className="btn btn-ghost mb-2 px-3 py-1.5 text-sm text-white"
                 >
-                    <ArrowLeft size={22} />
+                    <ArrowLeft size={18} />
                     <span className="hidden sm:inline">Volver al Dashboard</span>
                 </button>
 
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3">
-                        <div className="p-2 bg-primary/20 rounded-lg">
-                            <FileBarChart className="text-primary" size={32} />
+                <div className="flex items-center justify-between gap-3">
+                    <h1 className="text-lg md:text-xl font-bold flex items-center gap-2">
+                        <div className="p-1.5 bg-primary/20 rounded-lg">
+                            <FileBarChart className="text-primary" size={22} />
                         </div>
                         Reporte de {resident.name}
                     </h1>
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => setShowReportModal(true)}
-                            className="btn btn-primary flex items-center gap-2"
-                        >
-                            <Download size={18} />
-                            <span>Generar Requerimiento (Word)</span>
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => setShowReportModal(true)}
+                        className="btn btn-primary flex items-center gap-2 text-sm px-3 py-2"
+                    >
+                        <Download size={16} />
+                        <span className="hidden sm:inline">Generar Requerimiento</span>
+                        <span className="sm:hidden">Word</span>
+                    </button>
                 </div>
             </div>
 
@@ -121,20 +120,20 @@ const ResidentReports = () => {
             /> */}
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="glass-card p-6">
-                    <p className="text-sm text-text-muted uppercase mb-2">Medicamentos Activos</p>
-                    <p className="text-4xl font-bold text-white">{totalMeds}</p>
+            <div className="grid grid-cols-3 gap-3">
+                <div className="glass-card p-3 md:p-4">
+                    <p className="text-xs text-text-muted uppercase mb-1">Medicamentos Activos</p>
+                    <p className="text-2xl md:text-3xl font-bold text-white">{totalMeds}</p>
                 </div>
-                <div className="glass-card p-6">
-                    <p className="text-sm text-text-muted uppercase mb-2">Alertas de Stock</p>
-                    <p className={`text-4xl font-bold ${lowStockMeds.length > 0 ? 'text-red-400' : 'text-emerald-400'}`}>
+                <div className="glass-card p-3 md:p-4">
+                    <p className="text-xs text-text-muted uppercase mb-1">Alertas de Stock</p>
+                    <p className={`text-2xl md:text-3xl font-bold ${lowStockMeds.length > 0 ? 'text-red-400' : 'text-emerald-400'}`}>
                         {lowStockMeds.length}
                     </p>
                 </div>
-                <div className="glass-card p-6">
-                    <p className="text-sm text-text-muted uppercase mb-2">Inventario Total</p>
-                    <p className="text-4xl font-bold text-white">{totalStock}</p>
+                <div className="glass-card p-3 md:p-4">
+                    <p className="text-xs text-text-muted uppercase mb-1">Inventario Total</p>
+                    <p className="text-2xl md:text-3xl font-bold text-white">{totalStock}</p>
                     <p className="text-xs text-text-muted">pastillas</p>
                 </div>
             </div>
@@ -169,7 +168,7 @@ const ResidentReports = () => {
                             <div key={med.id} className="flex justify-between items-center p-3 bg-red-500/10 rounded-lg">
                                 <div>
                                     <p className="font-bold text-white">{med.name}</p>
-                                    <p className="text-xs text-red-300">Stock actual: {med.inventory?.currentStock}</p>
+                                    <p className="text-xs text-red-300">Stock actual: {parseFloat(med.current_stock) || 0}</p>
                                 </div>
                                 <button
                                     onClick={() => navigate(`/resident/${residentId}/inventory`)}
