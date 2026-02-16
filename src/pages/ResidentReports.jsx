@@ -76,34 +76,34 @@ const ResidentReports = () => {
             {/* Config Modal for Report */}
             {showReportModal && (
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#1E293B] p-6 rounded-xl max-w-lg w-full shadow-2xl border border-gray-700">
-                        <h3 className="text-xl font-bold mb-4 text-white">Configurar Reporte Word</h3>
+                    <div className="bg-[#1E293B] p-4 rounded-xl max-w-sm w-full shadow-2xl border border-gray-700 max-h-[90vh] overflow-y-auto">
+                        <h3 className="text-lg font-bold mb-3 text-white">Configurar Reporte</h3>
 
-                        <div className="mb-4">
-                            <label className="block text-sm text-gray-400 mb-2">Notas del Reporte</label>
+                        <div className="mb-3">
+                            <label className="block text-xs text-gray-400 mb-1">Notas del Reporte</label>
                             <textarea
                                 value={reportNotes}
                                 onChange={(e) => setReportNotes(e.target.value)}
-                                className="w-full h-40 bg-black/20 border border-gray-600 rounded-lg p-3 text-sm text-white resize-none focus:border-primary-500 outline-none"
+                                className="w-full h-24 bg-black/20 border border-gray-600 rounded-lg p-2 text-sm text-white resize-none focus:border-primary-500 outline-none"
                                 placeholder="Escribe las notas aquí..."
                             ></textarea>
-                            <p className="text-xs text-gray-500 mt-2">
+                            <p className="text-[10px] text-gray-500 mt-1">
                                 Este texto aparecerá al pie del documento.
                             </p>
                         </div>
 
-                        <div className="flex justify-end gap-3 mt-6">
+                        <div className="flex justify-end gap-2">
                             <button
                                 onClick={() => setShowReportModal(false)}
-                                className="btn btn-ghost"
+                                className="btn btn-ghost text-sm px-3 py-1.5"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={handleDownload}
-                                className="btn btn-primary"
+                                className="btn btn-primary text-sm px-3 py-1.5"
                             >
-                                <Download size={18} />
+                                <Download size={16} />
                                 Descargar .docx
                             </button>
                         </div>
