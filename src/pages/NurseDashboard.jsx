@@ -15,6 +15,7 @@ const NurseDashboard = () => {
     const [pillFraction, setPillFraction] = useState('1');
     const [tempDose, setTempDose] = useState('1');
     const [administerLoading, setAdministerLoading] = useState(false);
+    const [doseNote, setDoseNote] = useState('');
 
     useEffect(() => {
         fetchResidents();
@@ -50,6 +51,7 @@ const NurseDashboard = () => {
         }
         setTempDose(med.doseType === 'dosage' ? (med.doseAmount || defaultDose) : defaultDose);
         setIsEditMode(false);
+        setDoseNote('');
     };
 
     const handleAdminister = async () => {
@@ -73,6 +75,10 @@ const NurseDashboard = () => {
         const nurseName = nurseSession?.full_name || 'Enfermera';
 
         try {
+            const noteText = doseNote
+                ? `Administración por Enf. ${nurseName}: ${selectedMed.name} (${amount} ${units}) - Nota: ${doseNote}`
+                : `Administración por Enf. ${nurseName}: ${selectedMed.name} (${amount} ${units})`;
+
             // 1. Record transaction with nurse name
             const { error: transError } = await supabase
                 .from('transactions')
@@ -81,7 +87,7 @@ const NurseDashboard = () => {
                     resident_id: selectedResident.id,
                     type: 'administer',
                     amount: amount,
-                    note: `Administración por Enf. ${nurseName}: ${selectedMed.name} (${amount} ${units})`,
+                    note: noteText,
                     nurse_name: nurseName
                 }]);
 
@@ -283,7 +289,7 @@ const NurseDashboard = () => {
                                         <select
                                             value={pillFraction}
                                             onChange={(e) => setPillFraction(e.target.value)}
-                                            className="w-full text-2xl font-bold text-center py-4 bg-white/10 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)] focus:ring-emerald-500 text-white rounded-xl"
+                                            className="w-full text-xl font-bold text-center py-3 bg-white/10 border border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)] focus:ring-emerald-500 text-white rounded-xl"
                                         >
                                             <option value="0.25">1/4 pastilla</option>
                                             <option value="0.5">1/2 pastilla</option>
@@ -298,11 +304,24 @@ const NurseDashboard = () => {
                                             step="0.25"
                                             value={tempDose}
                                             onChange={(e) => setTempDose(e.target.value)}
-                                            className="w-full text-2xl font-bold text-center py-4 bg-white/10 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)] focus:ring-emerald-500 rounded-xl"
+                                            className="w-full text-xl font-bold text-center py-3 bg-white/10 border border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)] focus:ring-emerald-500 rounded-xl text-white"
                                             autoFocus
                                         />
                                     )}
-                                    <p className="text-xs text-warning mt-2 text-center font-medium">
+
+                                    {/* Note for dose modification */}
+                                    <div>
+                                        <label className="block text-xs text-emerald-400 font-bold mb-1">¿Por qué se modifica la dosis?</label>
+                                        <textarea
+                                            value={doseNote}
+                                            onChange={(e) => setDoseNote(e.target.value)}
+                                            placeholder="Ej: Indicación médica del Dr. García..."
+                                            className="w-full bg-white/5 border border-glass-border rounded-lg p-2 text-sm text-white resize-none focus:border-emerald-500 outline-none"
+                                            rows="2"
+                                        />
+                                    </div>
+
+                                    <p className="text-xs text-warning text-center font-medium">
                                         * Este cambio solo aplica para esta suministración.
                                     </p>
                                 </div>
