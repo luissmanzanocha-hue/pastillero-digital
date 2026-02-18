@@ -178,41 +178,25 @@ const ResidentKardex = () => {
                                             let supplyColor = 'text-gray-500';
                                             let supplyBg = 'bg-gray-100 border-gray-200';
 
-                                            if (medication.startDate && medication.treatmentDays && medication.dosagePattern) {
+                                            if (medication.dosagePattern && medication.status === 'active') {
                                                 const dailyDoses = medication.dosagePattern.split('-').reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
                                                 const pillFraction = medication.doseType === 'fraction' ? parseFloat(medication.pillFraction) : 1;
                                                 const dailyUsage = dailyDoses * pillFraction;
 
                                                 if (dailyUsage > 0) {
-                                                    const start = new Date(medication.startDate);
-                                                    const today = new Date();
-                                                    start.setHours(0, 0, 0, 0);
-                                                    today.setHours(0, 0, 0, 0);
+                                                    // Calculate need for next 30 days (Coverage Model)
+                                                    const daysToCover = 30;
+                                                    const pillsNeeded = dailyUsage * daysToCover;
 
-                                                    const diffTime = today.getTime() - start.getTime();
-                                                    const daysPassed = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                                                    const treatmentDuration = parseInt(medication.treatmentDays) || 30;
-
-                                                    let pillsNeeded = 0;
-
-                                                    if (daysPassed < 0) {
-                                                        pillsNeeded = treatmentDuration * dailyUsage;
-                                                    } else if (daysPassed < treatmentDuration) {
-                                                        const daysRemaining = treatmentDuration - daysPassed;
-                                                        pillsNeeded = daysRemaining * dailyUsage;
-                                                    } else {
-                                                        pillsNeeded = 0;
-                                                    }
-
-                                                    const currentStock = parseFloat(medication.currentStock) || 0;
+                                                    const currentStock = parseFloat(medication.current_stock) || 0;
                                                     const balance = currentStock - pillsNeeded;
 
-                                                    // Only show warning if we are short
+                                                    // Only show warning if we are short for the next 30 days
                                                     if (balance < 0) {
                                                         const missing = Math.abs(balance);
                                                         const missingText = medication.doseType === 'fraction' && missing < 1
                                                             ? decimalToFraction(missing)
-                                                            : missing.toFixed(2).replace(/\.00$/, '');
+                                                            : parseFloat(missing.toFixed(2));
                                                         supplyMessage = `Faltan ${missingText}`;
                                                         supplyColor = 'text-red-400 font-bold border-red-500/50';
                                                         supplyBg = 'bg-red-500/10';
@@ -220,7 +204,7 @@ const ResidentKardex = () => {
                                                         const extra = balance;
                                                         const extraText = medication.doseType === 'fraction' && extra < 1
                                                             ? decimalToFraction(extra)
-                                                            : extra.toFixed(2).replace(/\.00$/, '');
+                                                            : parseFloat(extra.toFixed(2));
                                                         supplyMessage = `Sobran ${extraText}`;
                                                         supplyColor = 'text-emerald-400 font-bold border-emerald-500/50';
                                                         supplyBg = 'bg-emerald-500/10';
