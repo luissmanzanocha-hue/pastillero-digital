@@ -196,9 +196,24 @@ const ResidentKardex = () => {
                                                         const remainingDays = medication.specific_days.filter(d => d >= todayStr).length;
                                                         pillsNeeded = dailyUsage * remainingDays;
                                                     } else {
-                                                        // Standard 30-day coverage model
-                                                        const daysToCover = 30;
-                                                        pillsNeeded = dailyUsage * daysToCover;
+                                                        // Refined Logic (Elapsed Time):
+                                                        // Calculate need for REMAINING days of the treatment cycle
+                                                        const start = new Date(medication.startDate || medication.start_date || new Date());
+                                                        const today = new Date();
+
+                                                        // Reset hours to compare dates only
+                                                        start.setHours(0, 0, 0, 0);
+                                                        today.setHours(0, 0, 0, 0);
+
+                                                        const diffTime = today.getTime() - start.getTime();
+                                                        const daysPassed = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                                                        const treatmentDuration = parseInt(medication.treatmentDays) || 30;
+
+                                                        // Ensure we don't count negative passed days (future start)
+                                                        const validDaysPassed = Math.max(0, daysPassed);
+                                                        const daysRemaining = Math.max(0, treatmentDuration - validDaysPassed);
+
+                                                        pillsNeeded = dailyUsage * daysRemaining;
                                                     }
 
                                                     const currentStock = parseFloat(medication.current_stock) || 0;
