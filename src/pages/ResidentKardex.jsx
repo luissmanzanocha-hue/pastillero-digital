@@ -184,9 +184,22 @@ const ResidentKardex = () => {
                                                 const dailyUsage = dailyDoses * pillFraction;
 
                                                 if (dailyUsage > 0) {
-                                                    // Calculate need for next 30 days (Coverage Model)
-                                                    const daysToCover = 30;
-                                                    const pillsNeeded = dailyUsage * daysToCover;
+                                                    let pillsNeeded = 0;
+
+                                                    // If specific days are defined, calculate based on remaining specific days
+                                                    if (medication.specific_days && medication.specific_days.length > 0) {
+                                                        const today = new Date();
+                                                        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+                                                        // Count how many specific days are today or in the future
+                                                        // Ensure specific_days are strings 'YYYY-MM-DD'
+                                                        const remainingDays = medication.specific_days.filter(d => d >= todayStr).length;
+                                                        pillsNeeded = dailyUsage * remainingDays;
+                                                    } else {
+                                                        // Standard 30-day coverage model
+                                                        const daysToCover = 30;
+                                                        pillsNeeded = dailyUsage * daysToCover;
+                                                    }
 
                                                     const currentStock = parseFloat(medication.current_stock) || 0;
                                                     const balance = currentStock - pillsNeeded;

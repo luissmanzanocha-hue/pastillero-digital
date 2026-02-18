@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { validateMedicationForm } from '../../utils/validators';
 import { decimalToFraction } from '../../utils/calculations';
+import { decimalToFraction } from '../../utils/calculations';
 import Alert from '../common/Alert';
+import MultiDatePicker from '../common/MultiDatePicker';
+import { Calendar, List } from 'lucide-react';
 
 const MedicationForm = ({ residentName, onSubmit, onCancel, initialData = null }) => {
     const formatTimeForInput = (timeString) => {
@@ -25,8 +28,35 @@ const MedicationForm = ({ residentName, onSubmit, onCancel, initialData = null }
         startDate: initialData?.startDate || new Date().toISOString().split('T')[0],
         doctor: initialData?.doctor || '',
         status: initialData?.status || 'active',
-        initialStock: initialData?.initialStock || ''
+        status: initialData?.status || 'active',
+        initialStock: initialData?.initialStock || '',
+        specificDays: initialData?.specific_days || []
     });
+
+    const [durationMode, setDurationMode] = useState(initialData?.specific_days?.length > 0 ? 'calendar' : 'manual');
+
+    const handleDateSelection = (dates) => {
+        let updates = { specificDays: dates };
+
+        if (dates.length > 0) {
+            const sortedDates = [...dates].sort();
+            const firstDate = sortedDates[0];
+            const lastDate = sortedDates[sortedDates.length - 1];
+
+            // Calculate span
+            const start = new Date(firstDate);
+            const end = new Date(lastDate);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+            updates.startDate = firstDate;
+            updates.treatmentDays = diffDays.toString();
+        } else {
+            updates.treatmentDays = '0';
+        }
+
+        setFormData(prev => ({ ...prev, ...updates }));
+    };
 
     // ... (rest of code)
 
@@ -300,35 +330,87 @@ const MedicationForm = ({ residentName, onSubmit, onCancel, initialData = null }
                 </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                    <label htmlFor="treatmentDays" className="text-white font-semibold">Días de Tratamiento *</label>
-                    <input
-                        type="number"
-                        id="treatmentDays"
-                        name="treatmentDays"
-                        value={formData.treatmentDays}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-white/5 border-2 border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white"
-                        min="1"
-                        max="365"
-                        required
-                    />
-                    <p className="text-xs text-text-muted mt-1">Típicamente 30 días (mensual)</p>
+
+
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <label className="text-white font-semibold">Duración del Tratamiento</label>
+                    <div className="flex bg-white/5 rounded-lg p-1 border border-glass-border">
+                        <button
+                            type="button"
+                            onClick={() => setDurationMode('manual')}
+                            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${durationMode === 'manual' ? 'bg-primary text-white shadow-sm' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            <div className="flex items-center gap-2">
+                                <List size={14} />
+                                Manual
+                            </div>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setDurationMode('calendar')}
+                            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${durationMode === 'calendar' ? 'bg-primary text-white shadow-sm' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            <div className="flex items-center gap-2">
+                                <Calendar size={14} />
+                                Calendario
+                            </div>
+                        </button>
+                    </div>
                 </div>
 
-                <div>
-                    <label htmlFor="startDate" className="text-white font-semibold">Fecha de Inicio *</label>
-                    <input
-                        type="date"
-                        id="startDate"
-                        name="startDate"
-                        value={formData.startDate}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-white/5 border-2 border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white"
-                        required
-                    />
-                </div>
+                {durationMode === 'manual' ? (
+                    <div className="grid grid-cols-2 gap-4 animate-in fade-in duration-300">
+                        <div>
+                            <label htmlFor="treatmentDays" className="text-white font-semibold text-sm">Días de Tratamiento *</label>
+                            <input
+                                type="number"
+                                id="treatmentDays"
+                                name="treatmentDays"
+                                value={formData.treatmentDays}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 bg-white/5 border-2 border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white"
+                                min="1"
+                                max="365"
+                                required={durationMode === 'manual'}
+                            />
+                            <p className="text-xs text-text-muted mt-1">Típicamente 30 días</p>
+                        </div>
+
+                        <div>
+                            <label htmlFor="startDate" className="text-white font-semibold text-sm">Fecha de Inicio *</label>
+                            <input
+                                type="date"
+                                id="startDate"
+                                name="startDate"
+                                value={formData.startDate}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 bg-white/5 border-2 border-glass-border rounded-lg focus:border-primary focus:bg-white/10 transition-all text-white"
+                                required
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="animate-in fade-in duration-300 space-y-4">
+                        <p className="text-sm text-gray-400">
+                            Selecciona los días específicos en el calendario. La fecha de inicio y duración se calcularán automáticamente.
+                        </p>
+                        <MultiDatePicker
+                            selectedDates={formData.specificDays || []}
+                            onChange={handleDateSelection}
+                        />
+                        <div className="grid grid-cols-2 gap-4 p-4 bg-white/5 rounded-xl border border-glass-border">
+                            <div>
+                                <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">Inicio</span>
+                                <p className="text-white font-mono text-lg">{formData.startDate || '-'}</p>
+                            </div>
+                            <div>
+                                <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">Duración</span>
+                                <p className="text-white font-mono text-lg">{formData.treatmentDays || '0'} días</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">

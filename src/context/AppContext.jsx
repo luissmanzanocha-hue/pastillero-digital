@@ -139,6 +139,7 @@ export const AppProvider = ({ children }) => {
                     doctor: medicationData.doctor || null,
                     status: medicationData.status || 'active',
                     current_stock: parseFloat(medicationData.initialStock) || 0,
+                    specific_days: medicationData.specificDays || null,
                     user_id: user.id
                 }])
                 .select()
@@ -188,6 +189,7 @@ export const AppProvider = ({ children }) => {
                 schedules: medicationData.schedules || [],
                 "treatmentDays": medicationData.treatmentDays || '30',
                 "startDate": medicationData.startDate || null,
+                "specific_days": medicationData.specificDays || null,
                 doctor: medicationData.doctor || null,
                 status: medicationData.status || 'active',
                 updated_at: new Date().toISOString()
