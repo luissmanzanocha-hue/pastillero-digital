@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { validateMedicationForm } from '../../utils/validators';
 import { decimalToFraction } from '../../utils/calculations';
-import { decimalToFraction } from '../../utils/calculations';
+
 import Alert from '../common/Alert';
 import MultiDatePicker from '../common/MultiDatePicker';
 import { Calendar, List } from 'lucide-react';
@@ -28,7 +28,7 @@ const MedicationForm = ({ residentName, onSubmit, onCancel, initialData = null }
         startDate: initialData?.startDate || new Date().toISOString().split('T')[0],
         doctor: initialData?.doctor || '',
         status: initialData?.status || 'active',
-        status: initialData?.status || 'active',
+
         initialStock: initialData?.initialStock || '',
         specificDays: initialData?.specific_days || []
     });
